@@ -11,7 +11,8 @@
     <form id="form1" runat="server">
         <div>
         </div>
-        班级的号:<asp:TextBox ID="TextBox1" runat="server" Width="185px"></asp:TextBox>
+        <!--滴滴滴滴滴-->
+        班级号:<asp:TextBox ID="TextBox1" runat="server" Width="185px"></asp:TextBox>
         <br />
         班级名称：<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
         <br />
