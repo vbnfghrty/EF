@@ -9,6 +9,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <!--你好-->
         <div>
         </div>
         班级号:<asp:TextBox ID="TextBox1" runat="server" Width="185px"></asp:TextBox>
