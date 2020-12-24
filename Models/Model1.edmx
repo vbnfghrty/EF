@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MydbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="班级">
+          <Key>
+            <PropertyRef Name="班级号" />
+          </Key>
+          <Property Name="班级号" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="班级名称" Type="nvarchar" MaxLength="10" />
+          <Property Name="学院编号" Type="nvarchar" MaxLength="2" />
+          <Property Name="班级人数" Type="int" />
+        </EntityType>
+        <EntityType Name="课程">
+          <Key>
+            <PropertyRef Name="课程号" />
+          </Key>
+          <Property Name="课程号" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="课程名称" Type="nvarchar" MaxLength="20" />
+          <Property Name="周学时" Type="smallint" />
+          <Property Name="上课周数" Type="smallint" />
+          <Property Name="学分" Type="smallint" />
+          <Property Name="课程简介" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="选课">
+          <Key>
+            <PropertyRef Name="学期" />
+            <PropertyRef Name="学号" />
+            <PropertyRef Name="课程号" />
+          </Key>
+          <Property Name="学期" Type="nchar" MaxLength="11" Nullable="false" />
+          <Property Name="学号" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="课程号" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="成绩" Type="smallint" />
+        </EntityType>
+        <EntityType Name="学生">
+          <Key>
+            <PropertyRef Name="学号" />
+          </Key>
+          <Property Name="学号" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="姓名" Type="nvarchar" MaxLength="5" />
+          <Property Name="性别" Type="nvarchar" MaxLength="1" />
+          <Property Name="出生日期" Type="datetime" />
+          <Property Name="民族" Type="nvarchar" MaxLength="6" />
+          <Property Name="地区" Type="nvarchar" MaxLength="6" />
+          <Property Name="班级号" Type="nvarchar" MaxLength="6" />
+          <Property Name="密码" Type="nvarchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="学院">
+          <Key>
+            <PropertyRef Name="学院编号" />
+          </Key>
+          <Property Name="学院编号" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="学院名称" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_班级_学院">
+          <End Role="学院" Type="Self.学院" Multiplicity="0..1" />
+          <End Role="班级" Type="Self.班级" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="学院">
+              <PropertyRef Name="学院编号" />
+            </Principal>
+            <Dependent Role="班级">
+              <PropertyRef Name="学院编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_选课_课程">
+          <End Role="课程" Type="Self.课程" Multiplicity="1" />
+          <End Role="选课" Type="Self.选课" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="课程">
+              <PropertyRef Name="课程号" />
+            </Principal>
+            <Dependent Role="选课">
+              <PropertyRef Name="课程号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_选课_学生">
+          <End Role="学生" Type="Self.学生" Multiplicity="1" />
+          <End Role="选课" Type="Self.选课" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="学生">
+              <PropertyRef Name="学号" />
+            </Principal>
+            <Dependent Role="选课">
+              <PropertyRef Name="学号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_学生_班级">
+          <End Role="班级" Type="Self.班级" Multiplicity="0..1" />
+          <End Role="学生" Type="Self.学生" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="班级">
+              <PropertyRef Name="班级号" />
+            </Principal>
+            <Dependent Role="学生">
+              <PropertyRef Name="班级号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MydbModelStoreContainer">
+          <EntitySet Name="班级" EntityType="Self.班级" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="课程" EntityType="Self.课程" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="选课" EntityType="Self.选课" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="学生" EntityType="Self.学生" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="学院" EntityType="Self.学院" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_班级_学院" Association="Self.FK_班级_学院">
+            <End Role="学院" EntitySet="学院" />
+            <End Role="班级" EntitySet="班级" />
+          </AssociationSet>
+          <AssociationSet Name="FK_选课_课程" Association="Self.FK_选课_课程">
+            <End Role="课程" EntitySet="课程" />
+            <End Role="选课" EntitySet="选课" />
+          </AssociationSet>
+          <AssociationSet Name="FK_选课_学生" Association="Self.FK_选课_学生">
+            <End Role="学生" EntitySet="学生" />
+            <End Role="选课" EntitySet="选课" />
+          </AssociationSet>
+          <AssociationSet Name="FK_学生_班级" Association="Self.FK_学生_班级">
+            <End Role="班级" EntitySet="班级" />
+            <End Role="学生" EntitySet="学生" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MydbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="班级">
+          <Key>
+            <PropertyRef Name="班级号" />
+          </Key>
+          <Property Name="班级号" Type="String" MaxLength="6" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="班级名称" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="学院编号" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="班级人数" Type="Int32" />
+          <NavigationProperty Name="学院" Relationship="Self.FK_班级_学院" FromRole="班级" ToRole="学院" />
+          <NavigationProperty Name="学生" Relationship="Self.FK_学生_班级" FromRole="班级" ToRole="学生" />
+        </EntityType>
+        <EntityType Name="课程">
+          <Key>
+            <PropertyRef Name="课程号" />
+          </Key>
+          <Property Name="课程号" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="课程名称" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="周学时" Type="Int16" />
+          <Property Name="上课周数" Type="Int16" />
+          <Property Name="学分" Type="Int16" />
+          <Property Name="课程简介" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="选课" Relationship="Self.FK_选课_课程" FromRole="课程" ToRole="选课" />
+        </EntityType>
+        <EntityType Name="选课">
+          <Key>
+            <PropertyRef Name="学期" />
+            <PropertyRef Name="学号" />
+            <PropertyRef Name="课程号" />
+          </Key>
+          <Property Name="学期" Type="String" MaxLength="11" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="学号" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="课程号" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="成绩" Type="Int16" />
+          <NavigationProperty Name="课程" Relationship="Self.FK_选课_课程" FromRole="选课" ToRole="课程" />
+          <NavigationProperty Name="学生" Relationship="Self.FK_选课_学生" FromRole="选课" ToRole="学生" />
+        </EntityType>
+        <EntityType Name="学生">
+          <Key>
+            <PropertyRef Name="学号" />
+          </Key>
+          <Property Name="学号" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="姓名" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="性别" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="出生日期" Type="DateTime" Precision="3" />
+          <Property Name="民族" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="地区" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="班级号" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="密码" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="班级" Relationship="Self.FK_学生_班级" FromRole="学生" ToRole="班级" />
+          <NavigationProperty Name="选课" Relationship="Self.FK_选课_学生" FromRole="学生" ToRole="选课" />
+        </EntityType>
+        <EntityType Name="学院">
+          <Key>
+            <PropertyRef Name="学院编号" />
+          </Key>
+          <Property Name="学院编号" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="学院名称" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="班级" Relationship="Self.FK_班级_学院" FromRole="学院" ToRole="班级" />
+        </EntityType>
+        <Association Name="FK_班级_学院">
+          <End Role="学院" Type="Self.学院" Multiplicity="0..1" />
+          <End Role="班级" Type="Self.班级" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="学院">
+              <PropertyRef Name="学院编号" />
+            </Principal>
+            <Dependent Role="班级">
+              <PropertyRef Name="学院编号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_学生_班级">
+          <End Role="班级" Type="Self.班级" Multiplicity="0..1" />
+          <End Role="学生" Type="Self.学生" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="班级">
+              <PropertyRef Name="班级号" />
+            </Principal>
+            <Dependent Role="学生">
+              <PropertyRef Name="班级号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_选课_课程">
+          <End Role="课程" Type="Self.课程" Multiplicity="1" />
+          <End Role="选课" Type="Self.选课" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="课程">
+              <PropertyRef Name="课程号" />
+            </Principal>
+            <Dependent Role="选课">
+              <PropertyRef Name="课程号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_选课_学生">
+          <End Role="学生" Type="Self.学生" Multiplicity="1" />
+          <End Role="选课" Type="Self.选课" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="学生">
+              <PropertyRef Name="学号" />
+            </Principal>
+            <Dependent Role="选课">
+              <PropertyRef Name="学号" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MydbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="班级" EntityType="Self.班级" />
+          <EntitySet Name="课程" EntityType="Self.课程" />
+          <EntitySet Name="选课" EntityType="Self.选课" />
+          <EntitySet Name="学生" EntityType="Self.学生" />
+          <EntitySet Name="学院" EntityType="Self.学院" />
+          <AssociationSet Name="FK_班级_学院" Association="Self.FK_班级_学院">
+            <End Role="学院" EntitySet="学院" />
+            <End Role="班级" EntitySet="班级" />
+          </AssociationSet>
+          <AssociationSet Name="FK_学生_班级" Association="Self.FK_学生_班级">
+            <End Role="班级" EntitySet="班级" />
+            <End Role="学生" EntitySet="学生" />
+          </AssociationSet>
+          <AssociationSet Name="FK_选课_课程" Association="Self.FK_选课_课程">
+            <End Role="课程" EntitySet="课程" />
+            <End Role="选课" EntitySet="选课" />
+          </AssociationSet>
+          <AssociationSet Name="FK_选课_学生" Association="Self.FK_选课_学生">
+            <End Role="学生" EntitySet="学生" />
+            <End Role="选课" EntitySet="选课" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MydbModelStoreContainer" CdmEntityContainer="MydbEntities">
+          <EntitySetMapping Name="班级">
+            <EntityTypeMapping TypeName="MydbModel.班级">
+              <MappingFragment StoreEntitySet="班级">
+                <ScalarProperty Name="班级号" ColumnName="班级号" />
+                <ScalarProperty Name="班级名称" ColumnName="班级名称" />
+                <ScalarProperty Name="学院编号" ColumnName="学院编号" />
+                <ScalarProperty Name="班级人数" ColumnName="班级人数" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="课程">
+            <EntityTypeMapping TypeName="MydbModel.课程">
+              <MappingFragment StoreEntitySet="课程">
+                <ScalarProperty Name="课程号" ColumnName="课程号" />
+                <ScalarProperty Name="课程名称" ColumnName="课程名称" />
+                <ScalarProperty Name="周学时" ColumnName="周学时" />
+                <ScalarProperty Name="上课周数" ColumnName="上课周数" />
+                <ScalarProperty Name="学分" ColumnName="学分" />
+                <ScalarProperty Name="课程简介" ColumnName="课程简介" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="选课">
+            <EntityTypeMapping TypeName="MydbModel.选课">
+              <MappingFragment StoreEntitySet="选课">
+                <ScalarProperty Name="学期" ColumnName="学期" />
+                <ScalarProperty Name="学号" ColumnName="学号" />
+                <ScalarProperty Name="课程号" ColumnName="课程号" />
+                <ScalarProperty Name="成绩" ColumnName="成绩" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="学生">
+            <EntityTypeMapping TypeName="MydbModel.学生">
+              <MappingFragment StoreEntitySet="学生">
+                <ScalarProperty Name="学号" ColumnName="学号" />
+                <ScalarProperty Name="姓名" ColumnName="姓名" />
+                <ScalarProperty Name="性别" ColumnName="性别" />
+                <ScalarProperty Name="出生日期" ColumnName="出生日期" />
+                <ScalarProperty Name="民族" ColumnName="民族" />
+                <ScalarProperty Name="地区" ColumnName="地区" />
+                <ScalarProperty Name="班级号" ColumnName="班级号" />
+                <ScalarProperty Name="密码" ColumnName="密码" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="学院">
+            <EntityTypeMapping TypeName="MydbModel.学院">
+              <MappingFragment StoreEntitySet="学院">
+                <ScalarProperty Name="学院编号" ColumnName="学院编号" />
+                <ScalarProperty Name="学院名称" ColumnName="学院名称" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
